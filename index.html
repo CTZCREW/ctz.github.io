@@ -16,9 +16,46 @@
             background-color: #000000;
             color: #ffffff;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* 1. Первый экран с логотипом */
+        /* --- Боковые анимированные градиентные волны --- */
+        .glow-side {
+            position: fixed;
+            top: -10%;
+            width: 140px;
+            height: 120%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(80px);
+            opacity: 0.55;
+        }
+
+        .glow-left {
+            left: -70px;
+            background: linear-gradient(180deg, #5ce1e6 0%, #a29bfe 50%, #6c5ce7 100%);
+            animation: waveLeft 9s ease-in-out infinite alternate;
+        }
+
+        .glow-right {
+            right: -70px;
+            background: linear-gradient(180deg, #a29bfe 0%, #5ce1e6 50%, #8c7ae6 100%);
+            animation: waveRight 9s ease-in-out infinite alternate;
+        }
+
+        @keyframes waveLeft {
+            0% { transform: translateY(-6%) scaleX(0.8); opacity: 0.4; }
+            50% { transform: translateY(6%) scaleX(1.3); opacity: 0.7; }
+            100% { transform: translateY(-3%) scaleX(0.9); opacity: 0.5; }
+        }
+
+        @keyframes waveRight {
+            0% { transform: translateY(6%) scaleX(1.2); opacity: 0.65; }
+            50% { transform: translateY(-6%) scaleX(0.8); opacity: 0.35; }
+            100% { transform: translateY(3%) scaleX(1.1); opacity: 0.7; }
+        }
+
+        /* --- 1. Первый экран с логотипом --- */
         .hero-section {
             height: 100vh;
             display: flex;
@@ -27,7 +64,7 @@
             align-items: center;
             position: relative;
             padding: 20px;
-            background-color: #000000;
+            z-index: 1;
         }
 
         .hero-logo {
@@ -35,42 +72,51 @@
             width: 420px;
             height: auto;
             object-fit: contain;
+            margin-bottom: 40px;
         }
 
-        /* Минималистичная векторная стрелочка */
+        /* Общий стиль для стрелочек */
         .scroll-arrow {
             position: absolute;
-            bottom: 30px;
-            width: 22px;
-            height: 22px;
-            opacity: 0.35;
+            width: 26px;
+            height: 26px;
+            opacity: 0.45;
             animation: bounce 2.2s infinite;
+            z-index: 2;
+        }
+
+        /* Первая стрелочка (поднята выше) */
+        .hero-section .scroll-arrow {
+            bottom: 120px;
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); opacity: 0.25; }
-            50% { transform: translateY(-7px); opacity: 0.65; }
+            0%, 100% { transform: translateY(0); opacity: 0.3; }
+            50% { transform: translateY(-8px); opacity: 0.85; }
         }
 
-        /* Контейнер для секций с кнопками */
+        /* --- 2. Секции с кнопками --- */
         .cards-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #000000;
-            padding-bottom: 80px;
+            position: relative;
+            z-index: 1;
+            padding-bottom: 40px;
         }
 
         .card-section {
-            min-height: 85vh;
+            min-height: 90vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
             padding: 20px;
+            position: relative;
         }
 
-        /* Прозрачная стеклянная карточка-кнопка */
+        /* Прозрачная стеклянная кнопка */
         .glass-card {
             width: 100%;
             max-width: 380px;
@@ -89,7 +135,6 @@
             cursor: pointer;
             will-change: transform, opacity;
 
-            /* Начальное состояние до прокрутки */
             transform: scale(0.65) translateY(40px);
             opacity: 0;
             transition: transform 0.1s linear, opacity 0.1s linear, border-color 0.3s ease, background 0.3s ease;
@@ -131,11 +176,20 @@
             background: rgba(255, 255, 255, 0.2);
             border-color: rgba(255, 255, 255, 0.4);
         }
+
+        /* Вторая стрелочка после первой кнопки (поднята повыше) */
+        .card-section .scroll-arrow {
+            bottom: 70px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Экран 1: Логотип и тонкая стрелочка -->
+    <!-- Боковые анимированные неоновые волны -->
+    <div class="glow-side glow-left"></div>
+    <div class="glow-side glow-right"></div>
+
+    <!-- Экран 1: Логотип -->
     <div class="hero-section">
         <img src="logo.jpg" alt="CTZCREW" class="hero-logo">
         <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -153,6 +207,10 @@
                 <div class="card-subtitle">Color Grading Channel</div>
                 <div class="btn-action">Перейти в канал →</div>
             </a>
+            <!-- Вторая стрелочка для показа следующей кнопки -->
+            <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20M12 20L6 14M12 20L18 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </div>
 
         <!-- Кнопка 2: CTZCREW -->
@@ -166,7 +224,7 @@
 
     </div>
 
-    <!-- Анимация плавной прокрутки и расширения каждой кнопки -->
+    <!-- Анимация появления кнопок при скролле -->
     <script>
         window.addEventListener('scroll', () => {
             const cards = document.querySelectorAll('.glass-card');
@@ -189,4 +247,3 @@
     </script>
 </body>
 </html>
-

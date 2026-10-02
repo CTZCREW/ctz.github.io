@@ -9,53 +9,76 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            min-height: 100vh;
             background-color: #000000;
             color: #ffffff;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* --- Боковые анимированные градиентные волны --- */
-        .glow-side {
+        /* Animated glowing gradient waves along left & right edges */
+        .side-wave {
             position: fixed;
-            top: -10%;
-            width: 140px;
-            height: 120%;
+            top: -20%;
+            width: 220px;
+            height: 140%;
             pointer-events: none;
-            z-index: 0;
-            filter: blur(80px);
-            opacity: 0.55;
+            z-index: 1;
+            filter: blur(70px);
+            opacity: 0.75;
+            will-change: transform, opacity;
         }
 
-        .glow-left {
-            left: -70px;
-            background: linear-gradient(180deg, #5ce1e6 0%, #a29bfe 50%, #6c5ce7 100%);
-            animation: waveLeft 9s ease-in-out infinite alternate;
+        .wave-left {
+            left: -100px;
+            background: linear-gradient(
+                180deg, 
+                #00f2fe 0%, 
+                #4facfe 25%, 
+                #7f00ff 60%, 
+                #00f2fe 100%
+            );
+            background-size: 100% 200%;
+            animation: waveFlowLeft 10s ease-in-out infinite alternate, gradientShift 14s ease infinite;
         }
 
-        .glow-right {
-            right: -70px;
-            background: linear-gradient(180deg, #a29bfe 0%, #5ce1e6 50%, #8c7ae6 100%);
-            animation: waveRight 9s ease-in-out infinite alternate;
+        .wave-right {
+            right: -100px;
+            background: linear-gradient(
+                180deg, 
+                #7f00ff 0%, 
+                #a29bfe 30%, 
+                #00f2fe 70%, 
+                #7f00ff 100%
+            );
+            background-size: 100% 200%;
+            animation: waveFlowRight 10s ease-in-out infinite alternate, gradientShift 14s ease infinite;
         }
 
-        @keyframes waveLeft {
-            0% { transform: translateY(-6%) scaleX(0.8); opacity: 0.4; }
-            50% { transform: translateY(6%) scaleX(1.3); opacity: 0.7; }
-            100% { transform: translateY(-3%) scaleX(0.9); opacity: 0.5; }
+        @keyframes waveFlowLeft {
+            0% { transform: translateY(-8%) scaleX(0.85); opacity: 0.6; }
+            50% { transform: translateY(8%) scaleX(1.35); opacity: 0.85; }
+            100% { transform: translateY(-4%) scaleX(0.95); opacity: 0.65; }
         }
 
-        @keyframes waveRight {
-            0% { transform: translateY(6%) scaleX(1.2); opacity: 0.65; }
-            50% { transform: translateY(-6%) scaleX(0.8); opacity: 0.35; }
-            100% { transform: translateY(3%) scaleX(1.1); opacity: 0.7; }
+        @keyframes waveFlowRight {
+            0% { transform: translateY(8%) scaleX(1.3); opacity: 0.85; }
+            50% { transform: translateY(-8%) scaleX(0.85); opacity: 0.55; }
+            100% { transform: translateY(4%) scaleX(1.2); opacity: 0.8; }
         }
 
-        /* --- 1. Первый экран с логотипом --- */
+        @keyframes gradientShift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* Hero Section - First screen */
         .hero-section {
             height: 100vh;
             display: flex;
@@ -64,45 +87,69 @@
             align-items: center;
             position: relative;
             padding: 20px;
-            z-index: 1;
+            z-index: 2;
+            background: transparent; /* Must stay transparent so side glows pass through */
+        }
+
+        .hero-logo-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
         }
 
         .hero-logo {
-            max-width: 85%;
-            width: 420px;
+            max-width: 90%;
+            width: 380px;
             height: auto;
             object-fit: contain;
-            margin-bottom: 40px;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.8));
         }
 
-        /* Общий стиль для стрелочек */
-        .scroll-arrow {
+        /* Elevated Arrow Styling */
+        .scroll-arrow-wrap {
             position: absolute;
-            width: 26px;
-            height: 26px;
-            opacity: 0.45;
-            animation: bounce 2.2s infinite;
-            z-index: 2;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            cursor: pointer;
+            text-decoration: none;
         }
 
-        /* Первая стрелочка (поднята выше) */
-        .hero-section .scroll-arrow {
-            bottom: 120px;
+        /* Hero arrow elevated high up as requested (160px from bottom) */
+        .hero-section .scroll-arrow-wrap {
+            bottom: 160px;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); opacity: 0.3; }
-            50% { transform: translateY(-8px); opacity: 0.85; }
+        .scroll-arrow-icon {
+            width: 28px;
+            height: 28px;
+            stroke: #ffffff;
+            stroke-width: 1.8;
+            filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.6));
+            animation: bounceArrow 2s ease-in-out infinite;
         }
 
-        /* --- 2. Секции с кнопками --- */
+        @keyframes bounceArrow {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(-12px); opacity: 1; }
+        }
+
+        /* Main Cards Container */
         .cards-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
-            z-index: 1;
-            padding-bottom: 40px;
+            z-index: 2;
+            background: transparent;
+            padding-bottom: 60px;
         }
 
         .card-section {
@@ -114,20 +161,26 @@
             width: 100%;
             padding: 20px;
             position: relative;
+            background: transparent;
         }
 
-        /* Прозрачная стеклянная кнопка */
+        /* Second Arrow elevated under Card 1 (80px from bottom) */
+        .card-section .scroll-arrow-wrap {
+            bottom: 80px;
+        }
+
+        /* Glassmorphism translucent card */
         .glass-card {
             width: 100%;
             max-width: 380px;
-            padding: 42px 28px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 28px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 44px 30px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 32px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.25);
             text-decoration: none;
             color: #ffffff;
             text-align: center;
@@ -135,36 +188,46 @@
             cursor: pointer;
             will-change: transform, opacity;
 
-            transform: scale(0.65) translateY(40px);
+            /* Initial state before scroll animation */
+            transform: scale(0.65) translateY(50px);
             opacity: 0;
-            transition: transform 0.1s linear, opacity 0.1s linear, border-color 0.3s ease, background 0.3s ease;
+            transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        opacity 0.15s linear, 
+                        border-color 0.3s ease, 
+                        background 0.3s ease,
+                        box-shadow 0.3s ease;
         }
 
         .glass-card:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 30px 70px rgba(0, 242, 254, 0.18),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.4);
         }
 
         .card-title {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
             letter-spacing: 3px;
             margin-bottom: 8px;
             text-transform: uppercase;
+            background: linear-gradient(135deg, #ffffff 0%, #d1d5db 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .card-subtitle {
             font-size: 13px;
-            color: rgba(255, 255, 255, 0.45);
-            margin-bottom: 28px;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 30px;
             letter-spacing: 1px;
         }
 
         .btn-action {
             display: inline-block;
-            padding: 12px 28px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 13px 32px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.22);
             border-radius: 30px;
             font-size: 13px;
             font-weight: 600;
@@ -173,48 +236,54 @@
         }
 
         .glass-card:hover .btn-action {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* Вторая стрелочка после первой кнопки (поднята повыше) */
-        .card-section .scroll-arrow {
-            bottom: 70px;
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.03);
         }
     </style>
 </head>
 <body>
 
-    <!-- Боковые анимированные неоновые волны -->
-    <div class="glow-side glow-left"></div>
-    <div class="glow-side glow-right"></div>
+    <div class="side-wave wave-left"></div>
+    <div class="side-wave wave-right"></div>
 
-    <!-- Экран 1: Логотип -->
-    <div class="hero-section">
-        <img src="logo.jpg" alt="CTZCREW" class="hero-logo">
-        <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4V20M12 20L6 14M12 20L18 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+    <!-- Hero Section -->
+    <div class="hero-section" id="hero">
+        <div class="hero-logo-wrapper">
+            <!-- Image with inline SVG fallback if logo.jpg fails to load -->
+            <img src="logo.jpg" alt="CTZCREW" class="hero-logo" 
+                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 120\'><text x=\'50%\' y=\'65%\' font-family=\'sans-serif\' font-weight=\'900\' font-size=\'55\' fill=\'%23ffffff\' text-anchor=\'middle\' letter-spacing=\'4\'>CTZCREW</text></svg>';">
+        </div>
+
+        <!-- First elevated arrow (160px from bottom) -->
+        <a href="#card1" class="scroll-arrow-wrap" aria-label="Scroll down">
+            <svg class="scroll-arrow-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20M12 20L6 14M12 20L18 14" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
     </div>
 
-    <!-- Секции с кнопками -->
+    <!-- Link Cards Container -->
     <div class="cards-container">
         
-        <!-- Кнопка 1: DEEP PICTURES -->
-        <div class="card-section">
+        <!-- Card 1: DEEP PICTURES -->
+        <div class="card-section" id="card1">
             <a href="https://t.me/deep_PICTURES_color" target="_blank" class="glass-card">
                 <div class="card-title">DEEP PICTURES</div>
                 <div class="card-subtitle">Color Grading Channel</div>
                 <div class="btn-action">Перейти в канал →</div>
             </a>
-            <!-- Вторая стрелочка для показа следующей кнопки -->
-            <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 4V20M12 20L6 14M12 20L18 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+
+            <!-- Second elevated arrow (80px from bottom) -->
+            <a href="#card2" class="scroll-arrow-wrap" aria-label="Scroll to next channel">
+                <svg class="scroll-arrow-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4V20M12 20L6 14M12 20L18 14" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
         </div>
 
-        <!-- Кнопка 2: CTZCREW -->
-        <div class="card-section">
+        <!-- Card 2: CTZCREW -->
+        <div class="card-section" id="card2">
             <a href="https://t.me/ctzcrew" target="_blank" class="glass-card">
                 <div class="card-title">CTZCREW</div>
                 <div class="card-subtitle">Official Channel</div>
@@ -224,26 +293,33 @@
 
     </div>
 
-    <!-- Анимация появления кнопок при скролле -->
     <script>
-        window.addEventListener('scroll', () => {
+        function handleScrollAnimations() {
             const cards = document.querySelectorAll('.glass-card');
             const windowHeight = window.innerHeight;
 
             cards.forEach(card => {
                 const rect = card.getBoundingClientRect();
                 
+                // Calculate scroll progress relative to viewport position
                 let progress = (windowHeight - rect.top) / (windowHeight * 0.65);
                 progress = Math.min(Math.max(progress, 0), 1);
 
+                // Scale smoothly from 0.65 to 1.0, fade opacity from 0 to 1
                 const scale = 0.65 + (0.35 * progress);
                 const opacity = progress;
-                const translateY = (1 - progress) * 40;
+                const translateY = (1 - progress) * 50;
 
                 card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
                 card.style.opacity = opacity;
             });
-        });
+        }
+
+        // Trigger on scroll and on initial load
+        window.addEventListener('scroll', handleScrollAnimations, { passive: true });
+        window.addEventListener('DOMContentLoaded', handleScrollAnimations);
+        handleScrollAnimations();
     </script>
 </body>
 </html>
+```

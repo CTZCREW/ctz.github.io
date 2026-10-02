@@ -58,17 +58,17 @@
         /* --- АДАПТИВ ДЛЯ ТЕЛЕФОНОВ (Экраны меньше 768px) --- */
         @media (max-width: 768px) {
             .glow-side {
-                width: 45px;          /* Делаем волны узкими на мобиле */
-                filter: blur(28px);   /* Уменьшаем размытие, чтобы не заливало центр */
+                width: 45px;          /* Делаем волны узкими на мобильных */
+                filter: blur(28px);   /* Мягкое размытие по бокам */
                 opacity: 0.45;
             }
 
             .glow-left {
-                left: -25px;          /* Прижимаем ближе к левому краю */
+                left: -25px;          /* Прижимаем к левому краю */
             }
 
             .glow-right {
-                right: -25px;         /* Прижимаем ближе к правому краю */
+                right: -25px;         /* Прижимаем к правому краю */
             }
         }
 
@@ -90,8 +90,6 @@
             height: auto;
             object-fit: contain;
             margin-bottom: 40px;
-            /* Убирает чёрный квадрат вокруг JPG-картинки */
-            mix-blend-mode: screen; 
         }
 
         /* Общий стиль для стрелочек */
@@ -210,7 +208,7 @@
 
     <!-- Экран 1: Логотип -->
     <div class="hero-section">
-        <img src="logo.jpg" alt="CTZCREW" class="hero-logo">
+        <img src="logo.png" alt="CTZCREW" class="hero-logo">
         <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4V20M12 20L6 14M12 20L18 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -266,4 +264,3 @@
     </script>
 </body>
 </html>
-

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEEP PICTURES</title>
+    <title>DEEP PICTURES & CTZCREW</title>
     <style>
         * {
             box-sizing: border-box;
@@ -37,32 +37,40 @@
             object-fit: contain;
         }
 
-        .scroll-hint {
+        /* Минималистичная векторная стрелочка */
+        .scroll-arrow {
             position: absolute;
-            bottom: 35px;
-            font-size: 12px;
-            letter-spacing: 3px;
-            color: rgba(255, 255, 255, 0.35);
-            text-transform: uppercase;
-            animation: bounce 2s infinite;
+            bottom: 30px;
+            width: 22px;
+            height: 22px;
+            opacity: 0.35;
+            animation: bounce 2.2s infinite;
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); opacity: 0.3; }
-            50% { transform: translateY(-8px); opacity: 0.7; }
+            0%, 100% { transform: translateY(0); opacity: 0.25; }
+            50% { transform: translateY(-7px); opacity: 0.65; }
         }
 
-        /* 2. Второй экран с прозрачной стеклянной кнопкой */
+        /* Контейнер для секций с кнопками */
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #000000;
+            padding-bottom: 80px;
+        }
+
         .card-section {
-            min-height: 100vh;
+            min-height: 85vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100%;
             padding: 20px;
-            background-color: #000000;
         }
 
-        /* Матовое прозрачное стекло */
+        /* Прозрачная стеклянная карточка-кнопка */
         .glass-card {
             width: 100%;
             max-width: 380px;
@@ -81,8 +89,8 @@
             cursor: pointer;
             will-change: transform, opacity;
 
-            /* Начальное состояние (маленькая и сдвинутая вниз) */
-            transform: scale(0.6) translateY(50px);
+            /* Начальное состояние до прокрутки */
+            transform: scale(0.65) translateY(40px);
             opacity: 0;
             transition: transform 0.1s linear, opacity 0.1s linear, border-color 0.3s ease, background 0.3s ease;
         }
@@ -127,37 +135,56 @@
 </head>
 <body>
 
-    <!-- Первый экран: Логотип -->
+    <!-- Экран 1: Логотип и тонкая стрелочка -->
     <div class="hero-section">
         <img src="logo.jpg" alt="CTZCREW" class="hero-logo">
-        <div class="scroll-hint">Пролистайте вниз ↓</div>
+        <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4V20M12 20L6 14M12 20L18 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
     </div>
 
-    <!-- Второй экран: Прозрачная кнопка-ссылка -->
-    <div class="card-section">
-        <a href="https://t.me/deep_PICTURES_color" target="_blank" class="glass-card" id="mainCard">
-            <div class="card-title">DEEP PICTURES</div>
-            <div class="card-subtitle">Telegram Channel</div>
-            <div class="btn-action">Перейти в канал →</div>
-        </a>
+    <!-- Секции с кнопками -->
+    <div class="cards-container">
+        
+        <!-- Кнопка 1: DEEP PICTURES -->
+        <div class="card-section">
+            <a href="https://t.me/deep_PICTURES_color" target="_blank" class="glass-card">
+                <div class="card-title">DEEP PICTURES</div>
+                <div class="card-subtitle">Color Grading Channel</div>
+                <div class="btn-action">Перейти в канал →</div>
+            </a>
+        </div>
+
+        <!-- Кнопка 2: CTZCREW -->
+        <div class="card-section">
+            <a href="https://t.me/ctzcrew" target="_blank" class="glass-card">
+                <div class="card-title">CTZCREW</div>
+                <div class="card-subtitle">Official Channel</div>
+                <div class="btn-action">Перейти в канал →</div>
+            </a>
+        </div>
+
     </div>
 
-    <!-- Скрипт плавного расширения карточки при скролле -->
+    <!-- Анимация плавной прокрутки и расширения каждой кнопки -->
     <script>
         window.addEventListener('scroll', () => {
-            const card = document.getElementById('mainCard');
-            const rect = card.getBoundingClientRect();
+            const cards = document.querySelectorAll('.glass-card');
             const windowHeight = window.innerHeight;
 
-            let progress = (windowHeight - rect.top) / (windowHeight * 0.7);
-            progress = Math.min(Math.max(progress, 0), 1);
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                
+                let progress = (windowHeight - rect.top) / (windowHeight * 0.65);
+                progress = Math.min(Math.max(progress, 0), 1);
 
-            const scale = 0.6 + (0.4 * progress);
-            const opacity = progress;
-            const translateY = (1 - progress) * 50;
+                const scale = 0.65 + (0.35 * progress);
+                const opacity = progress;
+                const translateY = (1 - progress) * 40;
 
-            card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
-            card.style.opacity = opacity;
+                card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+                card.style.opacity = opacity;
+            });
         });
     </script>
 </body>
